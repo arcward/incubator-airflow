@@ -83,9 +83,9 @@ class S3FileTransformOperator(BaseOperator):
                 "Dumping S3 file %s contents to local file %s",
                 self.source_s3_key, f_source.name
             )
-            source_s3_key_object.get_contents_to_file(f_source)
+            source_s3_key_object.download_file(f_source.name)
             f_source.flush()
-            source_s3.connection.close()
+            # source_s3.connection.close()
             transform_script_process = subprocess.Popen(
                 [self.transform_script, f_source.name, f_dest.name],
                 stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True)
@@ -106,4 +106,4 @@ class S3FileTransformOperator(BaseOperator):
                 replace=self.replace
             )
             self.log.info("Upload successful")
-            dest_s3.connection.close()
+            # dest_s3.connection.close()
